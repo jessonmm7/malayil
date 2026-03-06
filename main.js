@@ -90,60 +90,95 @@ ScrollReveal().reveal('.founder-card', {
     duration: 1200
 });
 
-// Dynamic Product Loading Logic
+// Product Search Logic
+function initSearch() {
+    const searchInput = document.getElementById('product-search');
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+
+        // Check if we are on the dynamic products.html page
+        if (document.getElementById('product-grid')) {
+            const params = new URLSearchParams(window.location.search);
+            const categoryId = params.get('category') || 'pulses-millets';
+            renderCategory(categoryId, query);
+        } else {
+            // Static Page Filtering
+            const cards = document.querySelectorAll('.cat-prod-card');
+            cards.forEach(card => {
+                const name = card.querySelector('h4').textContent.toLowerCase();
+                if (name.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    });
+}
+
+// Initializations
 document.addEventListener('DOMContentLoaded', () => {
+    initSearch();
+
+    // Existing dynamic loader
     const params = new URLSearchParams(window.location.search);
     const categoryId = params.get('category');
 
-    // Check if we are on the products.html page
     if (document.getElementById('product-grid')) {
         if (categoryId && PRODUCT_DATA[categoryId]) {
             renderCategory(categoryId);
         } else {
-            // Default to pulses-millets if no category or invalid category
             renderCategory('pulses-millets');
         }
     }
 });
 
-function renderCategory(id) {
+function renderCategory(id, query = '') {
     const data = PRODUCT_DATA[id];
     const grid = document.getElementById('product-grid');
     const pageTitle = document.getElementById('page-title');
     const breadcrumb = document.getElementById('breadcrumb-category');
 
-    // Update Labels & Sidebar
-    pageTitle.textContent = data.title;
-    breadcrumb.textContent = data.title;
-    document.title = `${data.title} | Malayil Food Park`;
+    if (!data || !grid) return;
 
-    const sidebarTitle = document.querySelector('.sidebar-title');
-    const sidebar = document.querySelector('.sidebar');
-    if (sidebarTitle) sidebarTitle.textContent = data.title;
-    if (sidebar) sidebar.classList.remove('sidebar-open'); // Close after selection
+    // Update Labels & Sidebar (Only once if not searching)
+    if (!query) {
+        if (pageTitle) pageTitle.textContent = data.title;
+        if (breadcrumb) breadcrumb.textContent = data.title;
+        document.title = `${data.title} | Malayil Food Park`;
 
-    // Update Active Sidebar Link
-    document.querySelectorAll('.category-list a').forEach(link => {
-        if (link.getAttribute('data-cat') === id) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
+        const sidebarTitle = document.querySelector('.sidebar-title');
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebarTitle) sidebarTitle.textContent = data.title;
+    }
+
+    // Filter Products if query exists
+    const filteredProducts = data.products.filter(product =>
+        product.name.toLowerCase().includes(query.toLowerCase())
+    );
 
     // Render Products
-    grid.innerHTML = data.products.map((product, index) => {
+    if (filteredProducts.length === 0) {
+        grid.innerHTML = `<div class="text-center" style="grid-column: 1/-1; padding: 3rem;">
+                            <h3 style="color: var(--gray);">No products found matching "${query}"</h3>
+                          </div>`;
+        return;
+    }
+
+    grid.innerHTML = filteredProducts.map((product, index) => {
         const isVideo = product.image.toLowerCase().endsWith('.mp4') || product.image.toLowerCase().endsWith('.webm');
         const mediaTag = isVideo
             ? `<video src="${product.image}" autoplay muted loop playsinline class="product-img"></video>`
             : `<img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy">`;
 
         return `
-            <div class="product-card" style="visibility: hidden;">
+            <div class="product-card">
                 <div class="product-img-wrapper">
                     ${mediaTag}
                 </div>
-                    <div class="cat-prod-details">
+                <div class="cat-prod-details">
                     <h4 class="product-name">${product.name}</h4>
                     <p class="product-availability">Availability : <span>${product.availability}</span></p>
                 </div>
@@ -151,12 +186,14 @@ function renderCategory(id) {
         `;
     }).join('');
 
-    // Re-trigger ScrollReveal for new elements
-    ScrollReveal().reveal('.product-card', {
-        delay: 100,
-        interval: 50,
-        distance: '20px',
-        origin: 'bottom',
-        duration: 600
-    });
+    // Re-trigger ScrollReveal if it's not a fast search update
+    if (!query) {
+        ScrollReveal().reveal('.product-card', {
+            delay: 100,
+            interval: 50,
+            distance: '20px',
+            origin: 'bottom',
+            duration: 600
+        });
+    }
 }
