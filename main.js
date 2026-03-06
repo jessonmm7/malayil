@@ -99,17 +99,24 @@ function renderCategory(id) {
     });
 
     // Render Products
-    grid.innerHTML = data.products.map((product, index) => `
-        <div class="product-card" style="visibility: hidden;">
-            <div class="product-img-wrapper">
-                <img src="${product.image}" alt="${product.name}" class="product-img">
+    grid.innerHTML = data.products.map((product, index) => {
+        const isVideo = product.image.toLowerCase().endsWith('.mp4') || product.image.toLowerCase().endsWith('.webm');
+        const mediaTag = isVideo
+            ? `<video src="${product.image}" autoplay muted loop playsinline class="product-img"></video>`
+            : `<img src="${product.image}" alt="${product.name}" class="product-img" loading="lazy">`;
+
+        return `
+            <div class="product-card" style="visibility: hidden;">
+                <div class="product-img-wrapper">
+                    ${mediaTag}
+                </div>
+                    <div class="cat-prod-details">
+                    <h4 class="product-name">${product.name}</h4>
+                    <p class="product-availability">Availability : <span>${product.availability}</span></p>
+                </div>
             </div>
-            <div class="product-info">
-                <h3 class="product-name">${product.name}</h3>
-                <p class="product-availability">Availability : ${product.availability}</p>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 
     // Re-trigger ScrollReveal for new elements
     ScrollReveal().reveal('.product-card', {

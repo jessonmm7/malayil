@@ -94,7 +94,7 @@ const PRODUCT_DATA = {
         "products": [
             { "name": "Steam Puttu Podi", "availability": "500g, 1kg, 5kg", "image": "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?auto=format&fit=crop&q=80&w=500" },
             { "name": "Rice flour", "availability": "500g, 1kg, 5kg", "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=500" },
-            { "name": "Rice flour PREMIUM", "availability": "5kg", "image": "https://images.unsplash.com/photo-1594913217032-6239745e3f16?auto=format&fit=crop&q=80&w=500" },
+            { "name": "Rice flour PREMIUM", "availability": "5kg", "image": "media/rice_flour_premium.mp4" },
             { "name": "UPPUMA SEMIA", "availability": "150g, 500g", "image": "https://images.unsplash.com/photo-1582845244558-71e89139886a?auto=format&fit=crop&q=80&w=500" },
             { "name": "ROASTED RAVA", "availability": "500g, 1kg", "image": "https://images.unsplash.com/photo-1621210141040-42b7812cc123?auto=format&fit=crop&q=80&w=500" },
             { "name": "RAGI SEMIA", "availability": "500g, 1kg", "image": "https://images.unsplash.com/photo-1590080875515-8a3a8dc2fe0a?auto=format&fit=crop&q=80&w=500" },
