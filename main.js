@@ -32,10 +32,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeLink = document.querySelector('.category-list a.active');
 
     if (sidebarTitle && sidebar) {
-        // Find the active category name
-        if (activeLink) {
-            // We just update the text - the chevron is handled by CSS ::after
-            sidebarTitle.textContent = activeLink.textContent;
+        // Find the active category name robustly
+        // 1. Try breadcrumbs span (static pages)
+        // 2. Try #breadcrumb-category (dynamic products page)
+        // 3. Fallback to .hero-title
+        const breadcrumb = document.querySelector('.breadcrumbs span') ||
+            document.getElementById('breadcrumb-category');
+        const heroTitle = document.querySelector('.hero-title');
+
+        const currentCategory = breadcrumb ? breadcrumb.textContent :
+            (heroTitle ? heroTitle.textContent : '');
+
+        if (currentCategory && currentCategory.toLowerCase() !== 'home') {
+            sidebarTitle.textContent = currentCategory;
         }
 
         sidebarTitle.addEventListener('click', () => {
