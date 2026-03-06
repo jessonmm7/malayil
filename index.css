@@ -605,14 +605,15 @@ img {
 
 .sidebar {
     background: var(--light);
-    padding: 2rem;
-    border-radius: 12px;
+    padding: 1.5rem;
+    border-radius: 16px;
     position: sticky;
     top: 120px;
     max-height: calc(100vh - 160px);
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--primary) transparent;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .sidebar::-webkit-scrollbar {
@@ -647,47 +648,67 @@ img {
     background: var(--primary);
 }
 
-.category-list li {
-    margin-bottom: 0.8rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    padding-bottom: 0.8rem;
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.category-list li:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
+.category-list li {
+    list-style: none;
 }
 
 .category-list a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem 1rem;
+    border-radius: 10px;
     color: var(--gray);
     font-weight: 500;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: var(--transition);
+    font-size: 0.92rem;
+    background: transparent;
+    border: 1.5px solid transparent;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-.category-list a::after {
-    content: '\f105';
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 900;
-    font-size: 0.8rem;
-    opacity: 0;
-    transform: translateX(-10px);
-    transition: var(--transition);
+.category-list a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--primary);
+    border-radius: 0 4px 4px 0;
+    transform: scaleY(0);
+    transition: transform 0.25s ease;
 }
 
-.category-list a:hover,
-.category-list a.active {
+.category-list a:hover {
+    background: rgba(var(--primary-rgb, 180, 0, 0), 0.07);
     color: var(--primary);
-    padding-left: 5px;
+    border-color: rgba(var(--primary-rgb, 180, 0, 0), 0.15);
+    padding-left: 1.3rem;
 }
 
-.category-list a:hover::after,
-.category-list a.active::after {
-    opacity: 1;
-    transform: translateX(0);
+.category-list a:hover::before {
+    transform: scaleY(1);
+}
+
+.category-list a.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    padding-left: 1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.category-list a.active::before {
+    display: none;
 }
 
 .category-product-grid {
