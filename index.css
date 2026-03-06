@@ -815,7 +815,7 @@ img {
     .page-layout {
         display: flex !important;
         flex-direction: column !important;
-        gap: 1.5rem;
+        gap: 2rem;
     }
 
     .sidebar {
@@ -825,66 +825,50 @@ img {
         width: 100%;
         max-height: none;
         overflow-y: visible;
-        background: transparent;
-        padding: 0;
-        border-radius: 0;
+        padding: 1rem 1.5rem;
         margin-bottom: 0;
-        box-shadow: none;
     }
 
-    /* Hide sidebar title on mobile */
+    /* Sidebar title acts as toggle button on mobile */
     .sidebar-title {
-        display: none;
-    }
-
-    /* Horizontal scrollable pill tab bar */
-    .category-list {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto;
-        gap: 0.6rem;
-        padding: 0.75rem 0;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-    }
-
-    .category-list::-webkit-scrollbar {
-        display: none;
-    }
-
-    .category-list li {
-        flex-shrink: 0;
-        margin-bottom: 0;
-        border-bottom: none;
-        padding-bottom: 0;
-    }
-
-    .category-list a {
-        display: inline-flex;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-        white-space: nowrap;
-        padding: 0.5rem 1.1rem;
-        border-radius: 999px;
-        border: 2px solid var(--primary);
-        color: var(--primary);
-        font-size: 0.78rem;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-        background: transparent;
-        transition: all 0.25s ease;
+        margin-bottom: 0;
+        user-select: none;
     }
 
-    .category-list a::after {
-        display: none;
+    .sidebar-title::after {
+        content: '\f107';
+        /* chevron-down */
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 1rem;
+        transition: transform 0.3s ease;
+        width: auto;
+        height: auto;
+        background: none;
+        position: static;
     }
 
-    .category-list a:hover,
-    .category-list a.active {
-        background: var(--primary);
-        color: white;
-        padding-left: 1.1rem;
+    /* When open, rotate the arrow */
+    .sidebar.sidebar-open .sidebar-title::after {
+        transform: rotate(180deg);
+    }
+
+    /* Category list hidden by default on mobile */
+    .category-list {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, padding 0.3s ease;
+        padding-top: 0;
+    }
+
+    /* Category list visible when open */
+    .sidebar.sidebar-open .category-list {
+        max-height: 600px;
+        padding-top: 1rem;
     }
 
     .category-product-grid {
@@ -892,10 +876,6 @@ img {
         width: 100%;
     }
 
-    .sidebar-title {
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-    }
 
     .category-list a {
         font-size: 0.9rem;

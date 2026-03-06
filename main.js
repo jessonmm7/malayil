@@ -25,6 +25,20 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     });
 });
 
+// Mobile Sidebar Category Accordion
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarTitle = document.querySelector('.sidebar-title');
+    const sidebar = document.querySelector('.sidebar');
+
+    if (sidebarTitle && sidebar) {
+        sidebarTitle.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('sidebar-open');
+            }
+        });
+    }
+});
+
 
 // Scroll Reveal Animations
 ScrollReveal().reveal('.hero-content', {
