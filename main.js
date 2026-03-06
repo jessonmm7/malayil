@@ -106,21 +106,63 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-function renderCategory(id) {
+// Product Search Logic
+function initSearch() {
+    const searchInput = document.getElementById('product-search');
+    if (!searchInput) return;
+
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+
+        const productGrid = document.getElementById('product-grid');
+        if (productGrid && typeof PRODUCT_DATA !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const categoryId = params.get('category') || 'pulses-millets';
+            const data = PRODUCT_DATA[categoryId];
+
+            if (data) {
+                const filtered = data.products.filter(p =>
+                    p.name.toLowerCase().includes(query)
+                );
+                renderCategory(categoryId, filtered);
+            }
+        } else {
+            // Static Page Filtering
+            const cards = document.querySelectorAll('.cat-prod-card');
+            cards.forEach(card => {
+                const name = card.querySelector('h4').textContent.toLowerCase();
+                if (name.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    });
+}
+
+// Initialize search on load
+document.addEventListener('DOMContentLoaded', initSearch);
+
+function renderCategory(id, items = null) {
     const data = PRODUCT_DATA[id];
     const grid = document.getElementById('product-grid');
     const pageTitle = document.getElementById('page-title');
     const breadcrumb = document.getElementById('breadcrumb-category');
 
+    if (!data || !grid) return;
+
     // Update Labels & Sidebar
-    pageTitle.textContent = data.title;
-    breadcrumb.textContent = data.title;
+    if (pageTitle) pageTitle.textContent = data.title;
+    if (breadcrumb) breadcrumb.textContent = data.title;
     document.title = `${data.title} | Malayil Food Park`;
 
     const sidebarTitle = document.querySelector('.sidebar-title');
     const sidebar = document.querySelector('.sidebar');
     if (sidebarTitle) sidebarTitle.textContent = data.title;
-    if (sidebar) sidebar.classList.remove('sidebar-open'); // Close after selection
+    // Don't close sidebar here if we're searching, as it might be annoying
+    // But we need to close it when a category is actually clicked.
+    // Let's keep the close logic only for direct category clicks if possible.
 
     // Update Active Sidebar Link
     document.querySelectorAll('.category-list a').forEach(link => {
@@ -131,8 +173,16 @@ function renderCategory(id) {
         }
     });
 
+    // Use items if provided (for search), otherwise use full data
+    const productsToRender = items || data.products;
+
+    if (productsToRender.length === 0) {
+        grid.innerHTML = `<div class="text-center py-5 w-100"><p class="text-gray">No products found matching your search.</p></div>`;
+        return;
+    }
+
     // Render Products
-    grid.innerHTML = data.products.map((product, index) => {
+    grid.innerHTML = productsToRender.map((product, index) => {
         const isVideo = product.image.toLowerCase().endsWith('.mp4') || product.image.toLowerCase().endsWith('.webm');
         const mediaTag = isVideo
             ? `<video src="${product.image}" autoplay muted loop playsinline class="product-img"></video>`
