@@ -25,16 +25,21 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     });
 });
 
-// Mobile Sidebar Category Accordion
+// Universal Sidebar Category Accordion
 document.addEventListener('DOMContentLoaded', () => {
     const sidebarTitle = document.querySelector('.sidebar-title');
     const sidebar = document.querySelector('.sidebar');
+    const activeLink = document.querySelector('.category-list a.active');
 
     if (sidebarTitle && sidebar) {
+        // Find the active category name
+        if (activeLink) {
+            // We just update the text - the chevron is handled by CSS ::after
+            sidebarTitle.textContent = activeLink.textContent;
+        }
+
         sidebarTitle.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('sidebar-open');
-            }
+            sidebar.classList.toggle('sidebar-open');
         });
     }
 });
@@ -98,10 +103,15 @@ function renderCategory(id) {
     const pageTitle = document.getElementById('page-title');
     const breadcrumb = document.getElementById('breadcrumb-category');
 
-    // Update labels
+    // Update Labels & Sidebar
     pageTitle.textContent = data.title;
     breadcrumb.textContent = data.title;
     document.title = `${data.title} | Malayil Food Park`;
+
+    const sidebarTitle = document.querySelector('.sidebar-title');
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebarTitle) sidebarTitle.textContent = data.title;
+    if (sidebar) sidebar.classList.remove('sidebar-open'); // Close after selection
 
     // Update Active Sidebar Link
     document.querySelectorAll('.category-list a').forEach(link => {
