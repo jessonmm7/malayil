@@ -3,8 +3,8 @@ const PRODUCT_DATA = {
         "title": "PULSES & MILLETS",
         "description": "Explore our high-quality Pulses & Millets. Available in various sizes.",
         "products": [
-            { "name": "FINGER MILLET", "availability": "500g, 1kg", "image": "https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&q=80&w=500" },
-            { "name": "FRIED GRAM", "availability": "100g, 250g, 500g", "image": "https://images.unsplash.com/photo-1615486511484-92e172fc34ea?auto=format&fit=crop&q=80&w=500" },
+            { "name": "FINGER MILLET", "availability": "500g, 1kg", "image": "media/finger_millet.mp4" },
+            { "name": "FRIED GRAM", "availability": "100g, 250g, 500g", "image": "media/fried_gram.mp4" },
             { "name": "CHICK PEAS", "availability": "250g, 500g", "image": "https://images.unsplash.com/photo-1604152135912-04a022e23696?auto=format&fit=crop&q=80&w=500" },
             { "name": "GREEN GRAM", "availability": "500g", "image": "https://images.unsplash.com/photo-1598446272583-14d1012fc643?auto=format&fit=crop&q=80&w=500" },
             { "name": "GREEN GRAM DAL", "availability": "500g", "image": "https://images.unsplash.com/photo-1585994806443-4dc31de5418b?auto=format&fit=crop&q=80&w=500" },

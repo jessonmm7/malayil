@@ -625,12 +625,43 @@ img {
 
     .page-layout {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
     .sidebar {
         position: relative;
         top: 0;
         margin-bottom: 2rem;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .page-header {
+        padding: 120px 0 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .category-product-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cat-prod-img {
+        height: 180px;
     }
 }
 
